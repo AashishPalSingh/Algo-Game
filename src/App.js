@@ -145,7 +145,7 @@ const getModalButtonDiv = () => ({
 })
 
 class App extends React.Component {
-  state = { ...getItems(), open: true };
+  state = { ...getItems(), open: true, win: false, lose: false, reward: false };
 
   initial = [7, 8, 1, 2, 4, 6, 3, 5, 2, 1, 8, 7];
 
@@ -220,11 +220,45 @@ class App extends React.Component {
     this.setState({ ...this.state, open: false });
   };
 
+  onOpenResultModal = () => {
+    if (this.calculateWin()) {
+      this.setState({ ...this.state, win: true });
+    } else {
+      this.setState({
+        ...this.state, lose: true
+      });
+    }
+  }
+  calculateWin = () => {
+    return JSON.stringify(this.state.increasing) == JSON.stringify([1, 2, 4, 5, 8]) &&
+      JSON.stringify(this.state.decreasing) == JSON.stringify([7, 6, 3, 2, 1]) &&
+      JSON.stringify(this.state.inputs) == JSON.stringify([8, 7])
+  }
+
+
+  onCloseWinModal = () => {
+    this.setState({ ...this.state, win: false });
+  };
+  onCloseLoseModal = () => {
+    this.setState({ ...this.state, lose: false });
+  };
+
+  onOpenRewardModal = () => {
+    this.setState({
+      ...this.state, reward: true
+    });
+  }
+  onCloseRewardModal = () => {
+    this.setState({
+      ...this.state, reward: false
+    });
+  }
+
   render() {
     return (
       <div className="App">
 
-        <Game>
+        <Game className="flip-scale-down-diag-2 ">
           <DragDropContext onDragEnd={this.onDragEnd}>
             <Droppable droppableId="droppable">
               {(provided, snapshot) => (
@@ -299,6 +333,12 @@ class App extends React.Component {
             </Droppable>
           </DragDropContext>
           <Button style={getModalButtonDiv()}>
+            <button style={getModalButtonStyle()} onClick={this.onOpenResultModal}>Submit</button>
+            <Modal classnName="winning-modal" open={this.state.win} onClose={this.onCloseWinModal} center><h2>Winner</h2></Modal>
+            <Modal className="losing-modal" open={this.state.lose} onClose={this.onCloseLoseModal} center><h2>Try Again</h2></Modal>
+          </Button>
+
+          <Button style={getModalButtonDiv()}>
             <button style={getModalButtonStyle()} onClick={this.onOpenModal}>How to play</button>
             <Modal open={this.state.open} onClose={this.onCloseModal} center>
               <h2>How to play</h2>
@@ -319,6 +359,16 @@ class App extends React.Component {
               <p>Decreasing Subsequence: [4, 3, 2, 1]</p>
               <p>So, no element is left which is not part of either of
 the subsequences.</p>
+            </Modal>
+          </Button>
+          <Button style={getModalButtonDiv()}>
+            <button style={getModalButtonStyle()} onClick={this.onOpenRewardModal}>Rewards 100 rupees</button>
+            <Modal classnName="reward-modal" open={this.state.reward} onClose={this.onCloseRewardModal} center>
+              <h2>Rewards</h2>
+              <p>You can guess the algo used behind this game.</p>
+              <p>You can submit your code in below form.</p>
+              <p>If your guess will be correct then you will get 100 rupees reward.</p>
+              <a href="https://forms.gle/7eB7tafmEfCg5m6U6">Link to form</a>
             </Modal>
           </Button>
         </Game>
