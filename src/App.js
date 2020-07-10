@@ -230,9 +230,9 @@ class App extends React.Component {
     }
   }
   calculateWin = () => {
-    return JSON.stringify(this.state.increasing) == JSON.stringify([1, 2, 4, 5, 8]) &&
-      JSON.stringify(this.state.decreasing) == JSON.stringify([7, 6, 3, 2, 1]) &&
-      JSON.stringify(this.state.inputs) == JSON.stringify([8, 7])
+    return JSON.stringify(this.state.increasing) === JSON.stringify([1, 2, 4, 5, 8]) &&
+      JSON.stringify(this.state.decreasing) === JSON.stringify([7, 6, 3, 2, 1]) &&
+      JSON.stringify(this.state.inputs) === JSON.stringify([8, 7])
   }
 
 
