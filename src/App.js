@@ -343,6 +343,7 @@ class App extends React.Component {
             <Modal open={this.state.open} onClose={this.onCloseModal} center>
               <h2>How to play</h2>
               <p>There are 3 boxes in puzzle with different border color</p>
+              <p><b>All the elements in these boxes can be moved using drag and drop</b></p>
               <p>Red color bordered box is the input array like [7, 8, 1, 2, 4, 6, 3, 5, 2, 1, 8, 7] </p>
               <h2>Problem Statement</h2>
               <p>Pick the elements from input box to make strictly increasing and strictly decreasing
