@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import styled from 'styled-components'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
 
 const Button = styled.div`
   background: transparent;
@@ -19,7 +21,7 @@ const Inputs = styled.div`
   flex-basis: 100%;
   background: transparent;
   border-radius: 3px;
-  border: 2px solid palevioletred;
+  border: 2px solid red;
   color: palevioletred;
   margin: 0 1em;
   justify-content: space-around;
@@ -126,8 +128,24 @@ const getItems = () => {
   }
 }
 
+const getModalButtonStyle = () => ({
+  width: "100%",
+  height: "100%",
+  color: "palevioletred",
+  "background-color": "white",
+  adding: "4px",
+  border: 0,
+});
+
+const getModalButtonDiv = () => ({
+  width: "100%",
+  height: "100%",
+  padding: 0,
+  margin: "5px 5px",
+})
+
 class App extends React.Component {
-  state = getItems();
+  state = { ...getItems(), open: true };
 
   initial = [7, 8, 1, 2, 4, 6, 3, 5, 2, 1, 8, 7];
 
@@ -194,6 +212,13 @@ class App extends React.Component {
     }
   };
 
+  onOpenModal = () => {
+    this.setState({ ...this.state, open: true });
+  };
+
+  onCloseModal = () => {
+    this.setState({ ...this.state, open: false });
+  };
 
   render() {
     return (
@@ -273,6 +298,29 @@ class App extends React.Component {
               )}
             </Droppable>
           </DragDropContext>
+          <Button style={getModalButtonDiv()}>
+            <button style={getModalButtonStyle()} onClick={this.onOpenModal}>How to play</button>
+            <Modal open={this.state.open} onClose={this.onCloseModal} center>
+              <h2>How to play</h2>
+              <p>There are 3 boxes in puzzle with different border color</p>
+              <p>Red color bordered box is the input array like [7, 8, 1, 2, 4, 6, 3, 5, 2, 1, 8, 7] </p>
+              <h2>Problem Statement</h2>
+              <p>Pick the elements from input box to make strictly increasing and strictly decreasing
+              subsequences from the array such that each array element belongs to increasing
+              subsequence or decreasing subsequence, but not both, or can be part of none of the subsequence</p>
+              <p><b>You need to ensure that minimal number of elements are left in input after your rearrangements</b></p>
+              <p>You need to pick elements from red bordered and moved them to blue(Increasing Subsequence) and green(Decreasing Subsequence)
+              colored boxes</p>
+              <p>Ensure ordering in subsequences boxes</p>
+              <p><b>click submit</b> once you are done with arrangements</p>
+              <h2>Example</h2>
+              <p>Input array: [1, 4, 2, 3, 3, 2, 4, 1]</p>
+              <p>Increasing Subsequence: [1, 2, 3, 4]</p>
+              <p>Decreasing Subsequence: [4, 3, 2, 1]</p>
+              <p>So, no element is left which is not part of either of
+the subsequences.</p>
+            </Modal>
+          </Button>
         </Game>
       </div >
     );
